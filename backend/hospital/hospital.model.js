@@ -45,6 +45,18 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      waitingUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      allottedUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
     },
     General: {
       capacity: {
@@ -67,6 +79,18 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      waitingUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      allottedUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
     },
     Emergency: {
       capacity: {
@@ -89,24 +113,42 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      waitingUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      allottedUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
     },
   },
 });
 
-hospitalSchema.methods.assignPatient = function (bedType) {
+hospitalSchema.methods.assignPatient = function (bedType, user) {
   if (this.bedTypes[bedType].availableCapacity > 0) {
     this.bedTypes[bedType].availableCapacity--;
+    this.bedTypes[bedType].allottedUsers.push(user._id);
     return true;
   } else {
+    this.bedTypes[bedType].waitingUsers.push(user._id);
     return false;
   }
 };
 
-hospitalSchema.methods.dischargePatient = function (bedType) {
+hospitalSchema.methods.dischargePatient = function (bedType, user) {
   if (
     this.bedTypes[bedType].availableCapacity < this.bedTypes[bedType].capacity
   ) {
     this.bedTypes[bedType].availableCapacity++;
+    const index = this.bedTypes[bedType].allottedUsers.indexOf(user._id);
+    if (index > -1) {
+      this.bedTypes[bedType].allottedUsers.splice(index, 1);
+    }
     return true;
   } else {
     return false;
