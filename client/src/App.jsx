@@ -9,6 +9,8 @@ import addPatient from './pages/addPatient';
 import { UserContext } from './providers/UserProvider';
 import { gapi } from 'gapi-script';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import SettingsPage from './pages/Settings';
 
 function App() {
   const { user, setUser, error, setError } = useContext(UserContext);
@@ -30,11 +32,11 @@ function App() {
       <React.Suspense fallback={<div>Loading...</div>}>
         <div className="flex h-screen overflow-hidden">
           <Sidebar className="w-64 h-full" />
-          <div className="flex-1 p-4 ">
+          <div className="flex-1 p-4 overflow-y-auto ">
             <Routes>
               <Route path="/" element={user ? <div className="flex flex-col items-center">Welcome, {user.name} <Logout /></div> : <Login />} />
-              <Route path="/home" element={<div>Home Content</div>} />
-              <Route path="/settings" element={<div>Settings Content</div>} />
+              <Route path="/home" element={<Home/>} />
+              <Route path="/settings" element={<SettingsPage/>} />
               <Route path="/bed-availability" element={<BedAvail />} />
               <Route path="/patient-dashboard" element={<addPatient/>} />
             </Routes>

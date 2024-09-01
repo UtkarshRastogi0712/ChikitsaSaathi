@@ -1,73 +1,41 @@
-import React, { useState } from 'react';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios for making API requests
+import { Card, CardHeader, CardContent } from '@/components/ui/card'; // Adjust import paths if necessary
+import { Badge } from '@/components/ui/badge'; // Adjust import paths if necessary
 
 function BedAvail() {
-  const [hospitalData] = useState([
-    {
-      _id: '1',
-      name: 'SRM',
-      location: {
-        coordinates: [77.5946, 12.9716],
-      },
-      bedTypes: {
-        ICU: {
-          capacity: 10,
-          availableCapacity: 5,
-          serviceRate: 1.2,
-          arrivalRate: 0.8,
-          dischargeRate: 0.6,
-        },
-        General: {
-          capacity: 50,
-          availableCapacity: 20,
-          serviceRate: 1.0,
-          arrivalRate: 1.0,
-          dischargeRate: 0.5,
-        },
-        Emergency: {
-          capacity: 15,
-          availableCapacity: 7,
-          serviceRate: 1.5,
-          arrivalRate: 1.2,
-          dischargeRate: 0.7,
-        },
-      },
-    },
-    {
-      _id: '2',
-      name: 'Apollo',
-      location: {
-        coordinates: [80.2707, 13.0827],
-      },
-      bedTypes: {
-        ICU: {
-          capacity: 8,
-          availableCapacity: 3,
-          serviceRate: 1.0,
-          arrivalRate: 0.6,
-          dischargeRate: 0.4,
-        },
-        General: {
-          capacity: 40,
-          availableCapacity: 10,
-          serviceRate: 1.1,
-          arrivalRate: 1.2,
-          dischargeRate: 0.4,
-        },
-        Emergency: {
-          capacity: 20,
-          availableCapacity: 5,
-          serviceRate: 1.3,
-          arrivalRate: 1.1,
-          dischargeRate: 0.5,
-        },
-      },
-    },
-  ]);
+  const [hospitalData, setHospitalData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch hospital data from the API
+  useEffect(() => {
+    async function fetchHospitalData() {
+      try {
+        const response = await axios.get('http://localhost:8000/hospitals/'); // Replace with your API endpoint
+        console.log('API Response:', response.data); // Log the data
+        setHospitalData(response.data);
+      } catch (err) {
+        console.error('Failed to fetch hospital data', err); // Log the error
+        setError('Failed to fetch hospital data');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchHospitalData();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-lg">Loading...</div>; // Centered loading indicator
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 text-lg">{error}</div>;
+  }
 
   return (
-    <div className="p-6 h-full w-full flex flex-wrap gap-8">
+    <div className="p-6 h-full w-full flex flex-wrap gap-8 overflow-auto">
       {Array.isArray(hospitalData) && hospitalData.length > 0 ? (
         hospitalData.map((hospital) => (
           <Card key={hospital._id} className="flex flex-col p-6 shadow-lg rounded-lg border border-gray-200 bg-white flex-shrink-0 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
