@@ -4,6 +4,7 @@ import './App.css';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Sidebar from './components/Sidebar';
+import BedAvail from './pages/BedAvail';
 import { UserContext } from './providers/UserProvider';
 import { gapi } from 'gapi-script';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -26,16 +27,16 @@ function App() {
   return (
     <Router>
       <React.Suspense fallback={<div>Loading...</div>}>
-        <div className="flex h-screen">
-          <Sidebar />
-          <div className="flex-1 p-6 flex items-center justify-center">
+        <div className="flex h-screen overflow-hidden">
+          <Sidebar className="w-64 h-full" />
+          <div className="flex-1 p-4 ">
             <Routes>
-              <Route path="/" element={user ? <div>Welcome, {user.name} <Logout /></div> : <Login />} />
+              <Route path="/" element={user ? <div className="flex flex-col items-center">Welcome, {user.name} <Logout /></div> : <Login />} />
               <Route path="/home" element={<div>Home Content</div>} />
               <Route path="/settings" element={<div>Settings Content</div>} />
-              <Route path="/bed-availability" element={<div>Bed Availability Content</div>} />
+              <Route path="/bed-availability" element={<BedAvail />} />
             </Routes>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="text-red-500 mt-4">{error}</p>}
           </div>
         </div>
       </React.Suspense>
