@@ -3,7 +3,6 @@
 */dist
 */dist-ssr
 *.locals
-
 .vscode/*
 !.vscode/extensions.json
 .idea
