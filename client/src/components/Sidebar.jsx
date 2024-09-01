@@ -24,7 +24,7 @@ function Sidebar() {
                                 {isOpen && "Home"}
                             </Button>
                         </Link>
-                        <Link to="/Add-Patient" className="w-full">
+                        <Link to="/patient-dashboard" className="w-full">
                             <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
                                 <ClipboardPlus className="inline-block mr-3" />
                                 {isOpen && "Add Patient"}
