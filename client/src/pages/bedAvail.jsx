@@ -67,10 +67,10 @@ function BedAvail() {
   ]);
 
   return (
-    <div className="p-6 h-screen flex flex-wrap gap-8 overflow-auto">
+    <div className="p-6 h-full w-full flex flex-wrap gap-8">
       {Array.isArray(hospitalData) && hospitalData.length > 0 ? (
         hospitalData.map((hospital) => (
-          <Card key={hospital._id} className="flex flex-col p-6 shadow-lg rounded-lg border border-gray-200 bg-white flex-shrink-0 w-full sm:w-2/3 lg:w-1/2 xl:w-1/3">
+          <Card key={hospital._id} className="flex flex-col p-6 shadow-lg rounded-lg border border-gray-200 bg-white flex-shrink-0 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
             <CardHeader className="border-b border-gray-300 pb-4">
               <h2 className="text-2xl font-bold text-gray-800">{hospital.name}</h2>
               <p className="text-gray-600">{`${hospital.location.coordinates.join(', ')}`}</p>
