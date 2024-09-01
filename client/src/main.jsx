@@ -4,14 +4,17 @@ import App from './App.jsx'
 import './index.css'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { UserProvider } from './providers/UserProvider';
+import { ErrorProvider } from './providers/ErrorProvider';
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
-    <UserProvider>
-        <App />
-      </UserProvider>
+        <UserProvider>
+          <ErrorProvider>
+            <App />
+          </ErrorProvider>
+        </UserProvider>
     </GoogleOAuthProvider>
   </StrictMode>,
 )

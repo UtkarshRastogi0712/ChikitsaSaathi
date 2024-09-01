@@ -1,19 +1,21 @@
-import { useEffect, useContext } from 'react';
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Sidebar from './components/Sidebar';
+import ErrorDisplay from './components/ErrorDisplay';
 import BedAvail from './pages/BedAvail';
-import addPatient from './pages/addPatient';
+import AddPatient from './pages/AddPatient';
 import { UserContext } from './providers/UserProvider';
+import { useError } from './providers/ErrorProvider';
 import { gapi } from 'gapi-script';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import SettingsPage from './pages/Settings';
 
 function App() {
-  const { user, setUser, error, setError } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const { errors } = useError(); // Use the error context
 
   useEffect(() => {
     function start() {
@@ -38,9 +40,10 @@ function App() {
               <Route path="/home" element={<Home/>} />
               <Route path="/settings" element={<SettingsPage/>} />
               <Route path="/bed-availability" element={<BedAvail />} />
-              <Route path="/patient-dashboard" element={<addPatient/>} />
+              <Route path="/patient-dashboard" element={<AddPatient />} />
             </Routes>
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+            {/* ErrorDisplay component to show errors globally */}
+            <ErrorDisplay />
           </div>
         </div>
       </React.Suspense>

@@ -45,6 +45,18 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      waitingUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      allottedUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
     },
     General: {
       capacity: {
@@ -67,6 +79,18 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      waitingUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      allottedUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
     },
     Emergency: {
       capacity: {
@@ -89,24 +113,51 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      waitingUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      allottedUsers: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
     },
   },
 });
 
-hospitalSchema.methods.assignPatient = function (bedType) {
-  if (this.bedTypes[bedType].availableCapacity > 0) {
+hospitalSchema.methods.assignPatient = function (bedType, user) {
+  if (
+    this.bedTypes[bedType].availableCapacity > 0 &&
+    this.bedTypes[bedType].waitingUsers.includes(user)
+  ) {
     this.bedTypes[bedType].availableCapacity--;
+    this.bedTypes[bedType].waitingUsers = this.bedTypes[
+      bedType
+    ].waitingUsers.filter((waitingUser) => waitingUser != user);
+    this.bedTypes[bedType].allottedUsers.push(user);
     return true;
   } else {
     return false;
   }
 };
 
-hospitalSchema.methods.dischargePatient = function (bedType) {
+hospitalSchema.methods.queuePatient = function (bedType, user) {
+  this.bedTypes[bedType].waitingUsers.push(user);
+};
+
+hospitalSchema.methods.dischargePatient = function (bedType, user) {
   if (
     this.bedTypes[bedType].availableCapacity < this.bedTypes[bedType].capacity
   ) {
     this.bedTypes[bedType].availableCapacity++;
+    const index = this.bedTypes[bedType].allottedUsers.indexOf(user);
+    if (index > -1) {
+      this.bedTypes[bedType].allottedUsers.splice(index, 1);
+    }
     return true;
   } else {
     return false;
