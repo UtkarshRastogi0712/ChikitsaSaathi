@@ -121,7 +121,6 @@ const autoAssign = async (req, res) => {
     if (!hospital) {
       return res.status(404).json({ error: "Hospital not found" });
     }
-    const user = req.params.user;
     let isAssigned = false;
     let dontSave = false;
     let arrivalRate = [];
