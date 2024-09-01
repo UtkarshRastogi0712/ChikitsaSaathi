@@ -58,10 +58,69 @@ const deleteHospitalById = async (req, res) => {
   }
 };
 
+const assignBed = async (req, res) => {
+  try {
+    const hospital = await Hospital.findById(req.params.id);
+    if (!hospital) {
+      return res.status(404).json({ error: "Hospital not found" });
+    }
+    const bedType = req.params.bed;
+    const user = req.params.user;
+    const isAssigned = hospital.assignPatient(bedType, user);
+    if (isAssigned) {
+      await hospital.save();
+      res.json({ message: "Bed alloted successfully" });
+    } else {
+      res.json({ message: "Couldnt allot bed" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to assign bed" });
+  }
+};
+
+const dischargeBed = async (req, res) => {
+  try {
+    const hospital = await Hospital.findById(req.params.id);
+    if (!hospital) {
+      return res.status(404).json({ error: "Hospital not found" });
+    }
+    const bedType = req.params.bed;
+    const user = req.params.user;
+    const isDischarged = hospital.dischargePatient(bedType, user);
+    if (isDischarged) {
+      await hospital.save();
+      res.json({ message: "Bed discharged successfully" });
+    } else {
+      res.json({ message: "Bed already empty" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to discharge bed" });
+  }
+};
+
+const waitlistBed = async (req, res) => {
+  try {
+    const hospital = await Hospital.findById(req.params.id);
+    if (!hospital) {
+      return res.status(404).json({ error: "Hospital not found" });
+    }
+    const bedType = req.params.bed;
+    const user = req.params.user;
+    hospital.queuePatient(bedType, user);
+    await hospital.save();
+    res.json({ message: "Bed added to waiting list" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to waitlist bed" });
+  }
+};
+
 module.exports = {
   createHospital,
   getAllHospitals,
   getHospitalById,
   updateHospitalById,
   deleteHospitalById,
+  assignBed,
+  dischargeBed,
+  waitlistBed,
 };
