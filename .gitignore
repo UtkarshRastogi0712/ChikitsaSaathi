@@ -13,7 +13,7 @@
 *.njsproj
 *.sln
 *.sw?
-
+*/.vite
 */logs
 */*.log
 */npm-debug.log*
