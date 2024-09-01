@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 require("./utils/db");
 const userRouter = require("./user/user.router");
@@ -7,6 +8,7 @@ const hospitalRouter = require("./hospital/hospital.router");
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use("/users", userRouter);
 app.use("/hospitals", hospitalRouter);
