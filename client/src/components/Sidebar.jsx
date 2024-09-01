@@ -1,11 +1,9 @@
-// Sidebar.jsx
 import { Button } from "./ui/button";
-import { Home, Settings, LogOut } from "lucide-react";
+import { Home, Settings, Bed } from "lucide-react";
 import { useState } from "react";
-import Login from "./login";
-import Logout from "./logout";
+import { Link } from "react-router-dom";
 
-function Sidebar({ setUser, setError }) {
+function Sidebar() {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -20,15 +18,24 @@ function Sidebar({ setUser, setError }) {
                         {isOpen ? "<" : ">"}
                     </Button>
                     <div className="flex flex-col items-start w-full">
-                        <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
-                            <Home className="inline-block mr-3" />
-                            {isOpen && "Home"}
-                        </Button>
-                        <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
-                            <Settings className="inline-block mr-3" />
-                            {isOpen && "Settings"}
-                        </Button>
-                        
+                        <Link to="/home" className="w-full">
+                            <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
+                                <Home className="inline-block mr-3" />
+                                {isOpen && "Home"}
+                            </Button>
+                        </Link>
+                        <Link to="/settings" className="w-full">
+                            <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
+                                <Settings className="inline-block mr-3" />
+                                {isOpen && "Settings"}
+                            </Button>
+                        </Link>
+                        <Link to="/bed-availability" className="w-full">
+                            <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
+                                <Bed className="inline-block mr-3" />
+                                {isOpen && "Bed Availability"}
+                            </Button>
+                        </Link>
                     </div>
                 </div>
                 <div className="w-full">
@@ -42,4 +49,3 @@ function Sidebar({ setUser, setError }) {
 }
 
 export default Sidebar;
-

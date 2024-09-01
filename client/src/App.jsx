@@ -6,14 +6,7 @@ import Logout from './components/Logout';
 import Sidebar from './components/Sidebar';
 import { UserContext } from './providers/UserProvider';
 import { gapi } from 'gapi-script';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { useRoutes } from 'react-router-dom';
-import routes from 'virtual:generated-pages-react';
-
-function AppRoutes() {
-  const routing = useRoutes(routes);
-  return routing;
-}
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   const { user, setUser, error, setError } = useContext(UserContext);
@@ -36,19 +29,15 @@ function App() {
         <div className="flex h-screen">
           <Sidebar />
           <div className="flex-1 p-6 flex items-center justify-center">
-            {user ? (
-              <div className="w-full">
-                <p>Welcome, {user.name}</p>
-                <h1 className="text-2xl font-bold">Welcome, {user.name}</h1>
-                <Logout /> {/* Include Logout button */}
-              </div>
-            ) : (
-              <Login />
-            )}
+            <Routes>
+              <Route path="/" element={user ? <div>Welcome, {user.name} <Logout /></div> : <Login />} />
+              <Route path="/home" element={<div>Home Content</div>} />
+              <Route path="/settings" element={<div>Settings Content</div>} />
+              <Route path="/bed-availability" element={<div>Bed Availability Content</div>} />
+            </Routes>
             {error && <p style={{ color: 'red' }}>{error}</p>}
           </div>
         </div>
-        <AppRoutes /> 
       </React.Suspense>
     </Router>
   );
