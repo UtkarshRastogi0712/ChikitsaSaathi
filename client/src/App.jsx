@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Sidebar from './components/Sidebar';
 import BedAvail from './pages/BedAvail';
+import addPatient from './pages/addPatient';
 import { UserContext } from './providers/UserProvider';
 import { gapi } from 'gapi-script';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -35,6 +36,7 @@ function App() {
               <Route path="/home" element={<div>Home Content</div>} />
               <Route path="/settings" element={<div>Settings Content</div>} />
               <Route path="/bed-availability" element={<BedAvail />} />
+              <Route path="/patient-dashboard" element={<addPatient/>} />
             </Routes>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </div>

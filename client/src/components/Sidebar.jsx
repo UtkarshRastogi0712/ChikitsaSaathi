@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { Home, Settings, Bed } from "lucide-react";
+import { Home, Settings, Bed, ClipboardPlus} from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -17,23 +17,29 @@ function Sidebar() {
                     >
                         {isOpen ? "<" : ">"}
                     </Button>
-                    <div className="flex flex-col items-start w-full">
+                    <div className="flex flex-col items-start w-full gap-2">
                         <Link to="/home" className="w-full">
                             <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
                                 <Home className="inline-block mr-3" />
                                 {isOpen && "Home"}
                             </Button>
                         </Link>
-                        <Link to="/settings" className="w-full">
+                        <Link to="/Add-Patient" className="w-full">
                             <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
-                                <Settings className="inline-block mr-3" />
-                                {isOpen && "Settings"}
+                                <ClipboardPlus className="inline-block mr-3" />
+                                {isOpen && "Add Patient"}
                             </Button>
                         </Link>
                         <Link to="/bed-availability" className="w-full">
                             <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
                                 <Bed className="inline-block mr-3" />
                                 {isOpen && "Bed Availability"}
+                            </Button>
+                        </Link>
+                        <Link to="/settings" className="w-full">
+                            <Button variant="ghost" className="w-full text-left px-4 py-2 hover:bg-gray-700">
+                                <Settings className="inline-block mr-3" />
+                                {isOpen && "Settings"}
                             </Button>
                         </Link>
                     </div>
